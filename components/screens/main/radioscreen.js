@@ -43,7 +43,6 @@ const Search = () => {
       .then((response) => response.json())
       .then((json) => {
         setData(json);
-        // console.log(json);
         // setTitle(json.title);
         // setDescription(json.description);
       })
@@ -78,6 +77,7 @@ const Search = () => {
               <TouchableOpacity onPress={() => {
                 navigation.navigate("radioPlayer",{
                   itemIndex: index,
+                  selectedCountry: country,
                 });
               }}>
               <Image
@@ -103,14 +103,16 @@ const Search = () => {
 };
 
 function radioPlayer() {
-
-  const [country, setCountry] = useState("Canada");
+    const route = useRoute();
+    let {itemIndex} = route.params;
+    let {selectedCountry} = route.params;
+    console.log({selectedCountry});
+  const [country, setCountry] = useState({selectedCountry}.selectedCountry);
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/search?country=${country}&reverse=false&offset=0&limit=15&hidebroken=false`;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const navigation = useNavigation();
-  const route = useRoute();
-  let {itemIndex} = route.params;
+
 
   //Set up the radio player page
   const [radioLink, setRadioLink] = useState({itemIndex}.itemIndex);
@@ -130,7 +132,6 @@ function radioPlayer() {
       .then((response) => response.json())
       .then((json) => {
         setData(json);
-        console.log(json);
         // setTitle(json.title);
         // setDescription(json.description);
       })
@@ -143,7 +144,6 @@ function radioPlayer() {
   //Fetch the data from the radio api
   // Play radio function
   async function playRadio(prop){
-    console.log('Loading Radio');
     const { sound } = await Audio.Sound.createAsync(
       { uri: data[prop].url },
       { shouldPlay: true },
@@ -153,13 +153,11 @@ function radioPlayer() {
     );
     setSound(sound);
 
-    console.log("Playing Radio")
     await sound.playAsync();}
 
   useEffect(() => {
     return sound
       ? () => {
-        console.log('Unloading Sound');
         sound.pauseAsync(); }
       : undefined;
   }, [sound]);

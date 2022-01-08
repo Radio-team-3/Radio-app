@@ -7,11 +7,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUp from './components/screens/loginSignUp/signupscreen';
 import Login from './components/screens/loginSignUp/loginscreen';
 import Home from './components/screens/main/homescreen';
-import Music from './components/screens/main/musicscreen';
 import Favourite from './components/screens/main/favouritescreen';
 import radio from "./components/screens/main/radioscreen";
 import Profile from './components/screens/main/profilescreen';
-import Lyrics from './components/screens/main/lyricsscreen';
 import OnboardingScreens from './components/screens/main/OnBoardingScreen';
 
 export default function App(){
@@ -27,7 +25,7 @@ useEffect(()=>{
 if(user){
   setIsSignedIn(true);
 }else{
-  setIsSignedIn(false);
+   setIsSignedIn(false);
 }
 
  })
@@ -42,11 +40,9 @@ if(isSignedIn === true){
             tabBarIcon: ({ color, size }) => {
               const icon = {
                 Home: "home",
-                Music: "music",
                 Favourites: "heart",
                 Radio: "radio",
-                Profile: "account",
-                Lyrics: "book-music"
+                Profile: "account"
               };
 
               return (
@@ -67,10 +63,6 @@ if(isSignedIn === true){
             component={ Home }
           />
           <Tab.Screen
-            name="Music"
-            component={ Music }
-          />
-          <Tab.Screen
             name="Favourites"
             component={ Favourite }
           />
@@ -78,10 +70,6 @@ if(isSignedIn === true){
             name="Radio"
             component={ radio }
           />
-            <Tab.Screen
-                name="Lyrics"
-                component={ Lyrics }
-            />
           <Tab.Screen
             name="Profile"
             component={ Profile }

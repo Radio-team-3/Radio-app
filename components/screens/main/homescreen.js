@@ -7,7 +7,7 @@ import { ScrollView } from "react-native-gesture-handler";
 
 import { firebase } from '../../../Firebase/firebase.js';
 import RadioCards from '../../api_cards/radio_cards';
-import MusicCards from "../../api_cards/music_cards.js";
+//import MusicCards from "../../api_cards/music_cards.js";
 
 class Home extends Component {
     render() {
@@ -15,15 +15,8 @@ class Home extends Component {
       const email = user.email;
 
         return (
-          <ScrollView style={styles.container}>
+          <ScrollView style={styles.container} Vertical>
             <Text style={styles.greeting}>Welcome {email}!</Text>
-              <ScrollView style={styles.row}>
-                <View style={styles.displayInline}>
-                  <Text style={styles.subTitle}>Music</Text>
-                  <MaterialCommunityIcons style={styles.icon} name={'magnify'} />
-                </View>
-                <MusicCards />
-              </ScrollView>
               <ScrollView style={styles.row}>
                 <View style={styles.displayInline}>
                   <Text style={styles.subTitle}>Radio</Text>
