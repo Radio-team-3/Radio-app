@@ -12,6 +12,16 @@ import radio from "./components/screens/main/radioscreen";
 import Profile from './components/screens/main/profilescreen';
 import OnboardingScreens from './components/screens/main/OnBoardingScreen';
 
+
+
+//GET RIDE OF UNWANTED YELLOW WARNING SIGNALS
+export default class App extends React.Component {
+     render() {
+          console.disableYellowBox = true;
+          return (<View></View>);
+     }
+}
+
 export default function App(){
 
     {/*setting initial sign in state to false */}
