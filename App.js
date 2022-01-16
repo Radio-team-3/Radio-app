@@ -15,15 +15,8 @@ import OnboardingScreens from './components/screens/main/OnBoardingScreen';
 
 
 //GET RIDE OF UNWANTED YELLOW WARNING SIGNALS
-export default class App extends React.Component {
-     render() {
-          console.disableYellowBox = true;
-          return (<View></View>);
-     }
-}
 
 export default function App(){
-
     {/*setting initial sign in state to false */}
   const [isSignedIn, setIsSignedIn ]= useState(false);
   const Stack = createStackNavigator();
@@ -56,6 +49,7 @@ if(isSignedIn === true){
               };
 
               return (
+              console.disableYellowBox = true,
                 <MaterialCommunityIcons
                   name={icon[route.name]}
                   color={color}

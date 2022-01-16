@@ -20,6 +20,7 @@ import { style } from "styled-system";
 import { Audio } from 'expo-av';
 const Stack = createStackNavigator();
 
+// SEARCH ENGINE FUNCTIONS
 const Search = () => {
   const [country, setCountry] = useState("Canada");
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/search?country=${country}&reverse=false&offset=0&limit=15&hidebroken=false`;
@@ -32,6 +33,7 @@ const Search = () => {
   // const [description, setDescription] = useState([]);
   // const [text, onChangeText] = React.useState("Useless Text");
 
+ // SET UP THE JSON API FUNCTION
   useEffect(() => {
     fetch(URL, {
       method: "GET",
@@ -50,6 +52,7 @@ const Search = () => {
       .finally(() => setLoading(false));
   }, [URL]);
 
+  // DISPLAY THE SEARCH FUNCTION, AND THE SEARCH RESULT, SEARCH RESULT SET TO CANADA BY DEFAULT
   return (
     <View style={styles.container}>
       <View style={styles.searchContainer}>
@@ -102,11 +105,15 @@ const Search = () => {
   );
 };
 
+// CREATE A RADIO PLAYER FUNCTION
 function radioPlayer() {
+
+    // ACCESS THE PARAM THAT ARE PASSED FROM THE SELECTED RADIO CHANNEL
     const route = useRoute();
+    // SELECTED RADIO STATION INDEX PARAM
     let {itemIndex} = route.params;
+    // SELECTED COUNTRY NAME PARAM
     let {selectedCountry} = route.params;
-    console.log({selectedCountry});
   const [country, setCountry] = useState({selectedCountry}.selectedCountry);
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/search?country=${country}&reverse=false&offset=0&limit=15&hidebroken=false`;
   const [isLoading, setLoading] = useState(true);
@@ -120,7 +127,7 @@ function radioPlayer() {
   const [cat,setCat] =useState('');
   const [sound, setSound] = useState();
 
-
+  // PASS THE PARAM TO THE JSON FILE TO GET THE RESULT LIST
   useEffect(() => {
     fetch(URL, {
       method: "GET",
@@ -164,6 +171,7 @@ function radioPlayer() {
 
 
 
+  // DISPLAY THE RADIO PLAYER PAGE
   return (
     <SafeAreaView style={styles.playerContainer}>
       <TouchableOpacity onPress={() =>navigation.goBack()} >
@@ -196,6 +204,7 @@ function radioPlayer() {
   );
 }
 
+// CONNECT THE RADIO LIST AND THE RADIO PLAYER
 function radio(){
   return(
     <NavigationContainer independent={true}>
@@ -207,6 +216,7 @@ function radio(){
   );
 }
 
+// RADIO LIST AND RADIO PLAYER STYLING
 const styles = StyleSheet.create({
   container: {
     flex: 1,
