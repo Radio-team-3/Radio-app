@@ -100,7 +100,7 @@ const Search = () => {
         renderItem={({ item,index }) => (
           <View style={styles.stationsContainer} key={item.id}>
             <View>
-              <TouchableOpacity onPress={() => {
+              <TouchableOpacity style={{flexDirection:"row",alignItems:'center'}} onPress={() => {
                 navigation.navigate("radioPlayer",{
                   itemIndex: index,
                   selectedCountry: country,
@@ -115,13 +115,14 @@ const Search = () => {
                 }}
                 style={{ width: 90, height: 90 }}
               />
-              </TouchableOpacity>
-            </View>
             <View style={styles.stationsTextContainer}>
               <Text style={styles.stationText}>
                 {item.name} {"\n"}
               </Text>
             </View>
+              </TouchableOpacity>
+            </View>
+
           </View>
         )}
       />
@@ -136,7 +137,7 @@ const Search = () => {
                  <View style={styles.stationsContainer} key={item.id}>
                    <View>
 
-                     <TouchableOpacity onPress={() => {
+                     <TouchableOpacity style={{flexDirection:"row",alignItems:'center'}} onPress={() => {
                        navigation.navigate("topRadioPlayer",{
                          itemIndex: index,
                          selectedKey: item.stationuuid,
@@ -150,12 +151,13 @@ const Search = () => {
                        }}
                        style={{ width: 90, height: 90 }}
                      />
-                     </TouchableOpacity>
-                   </View>
                    <View style={styles.stationsTextContainer}>
                      <Text style={styles.stationText}>
                        {item.name} {"\n"}</Text>
                    </View>
+                     </TouchableOpacity>
+                   </View>
+
                  </View>
                )}
              />
