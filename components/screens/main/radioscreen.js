@@ -150,7 +150,7 @@ const Search = () => {
         )}
       />
 
-      <Text style={styles.textStylingChannels}> Top Channels</Text>
+      <Text style={styles.textStylingChannelsTwo}> Top Channels</Text>
       <FlatList
                 nestedScrollEnabled
                data={topData}
@@ -186,7 +186,7 @@ const Search = () => {
                )}
              />
 
-        <Text style={styles.textStylingChannels}> New Channels</Text>
+        <Text style={styles.textStylingChannelsTwo}> New Channels</Text>
               <FlatList
               nestedScrollEnabled
                        data={newData}
@@ -441,7 +441,7 @@ function newRadioPlayer() {
   const [country, setCountry] = useState({selectedCountry}.selectedCountry);
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/lastchange/5?offset=0&limit=100000&hidebroken=false`;
   const [isLoading, setLoading] = useState(true);
-  const [newdata, setNewData] = useState([]);
+  const [data, setData] = useState([]);
   const navigation = useNavigation();
 
 
@@ -462,7 +462,7 @@ function newRadioPlayer() {
     })
       .then((response) => response.json())
       .then((json) => {
-        setNewData(json);
+        setData(json);
         // setTitle(json.title);
         // setDescription(json.description);
       })
@@ -588,10 +588,25 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   textStylingChannels:{
+    width:"90%",
+    backgroundColor:"black",
     color: "#c4c3c3",
-    marginTop: 10,
-    fontSize: 22
+    marginTop: 15,
+    fontSize: 22,
+    paddingLeft:10,
+     paddingTop:20,
+     paddingBottom:20,
   },
+    textStylingChannelsTwo:{
+      width:"90%",
+      backgroundColor:"black",
+      color: "#c4c3c3",
+      marginTop: 25,
+      fontSize: 22,
+      paddingLeft:10,
+      paddingTop:20,
+      paddingBottom:20,
+    },
   stationsTextContainer: {
     marginLeft: 15,
     fontSize: 10
