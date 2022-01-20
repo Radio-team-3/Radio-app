@@ -4,6 +4,7 @@ import {NavigationContainer, useNavigation, useRoute,} from '@react-navigation/n
 import {createStackNavigator} from '@react-navigation/stack';
 import {
   StyleSheet,
+  ScrollView,
   Text,
   View,
   SafeAreaView,
@@ -25,10 +26,12 @@ const Search = () => {
   const [country, setCountry] = useState("Canada");
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/search?country=${country}&reverse=false&offset=0&limit=15&hidebroken=false`;
   const topURL = `https://radio-browser.p.rapidapi.com/json/stations/topclick/5?offset=0&limit=100000&hidebroken=false`;
+  const newURL = `https://radio-browser.p.rapidapi.com/json/stations/lastchange/5?offset=0&limit=100000&hidebroken=false`;
 
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [topData, setTopData] = useState([]);
+  const [newData, setNewData] = useState([]);
   const navigation = useNavigation();
 
   // const [title, setTitle] = useState([]);
@@ -54,7 +57,7 @@ const Search = () => {
       .finally(() => setLoading(false));
   }, [URL]);
 
-//SET UP THE TOP CLICK CHANNES JSON API FUNCTION
+//SET UP THE TOP CLICK CHANNELS JSON API FUNCTION
   useEffect(() => {
     fetch(topURL, {
       method: "GET",
@@ -73,10 +76,29 @@ const Search = () => {
       .finally(() => setLoading(false));
   }, [topURL]);
 
+//SET UP THE NEW CHANNELS JSON API FUNCTION
+  useEffect(() => {
+    fetch(newURL, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-host": "radio-browser.p.rapidapi.com",
+        "x-rapidapi-key": "93929a08ebmsh1d9489f52854d26p1ca74djsna9c4054aea22",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setNewData(json);
+        // setTitle(json.title);
+        // setDescription(json.description);
+      })
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
+  }, [newURL]);
+
 
   // DISPLAY THE SEARCH FUNCTION, AND THE SEARCH RESULT, SEARCH RESULT SET TO CANADA BY DEFAULT
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.searchContainer}>
         <Image
           source={require("../../../assets/images/logo.png")}
@@ -93,6 +115,7 @@ const Search = () => {
 
       <Text style={styles.textStylingChannels}>Channels</Text>
       <FlatList
+        nestedScrollEnabled
         data={data}
         key={data.changeuuid}
         // keyExtractor={({ id }, index) => id}
@@ -129,6 +152,7 @@ const Search = () => {
 
       <Text style={styles.textStylingChannels}> Top Channels</Text>
       <FlatList
+                nestedScrollEnabled
                data={topData}
                key={topData.changeuuid}
                // keyExtractor={({ id }, index) => id}
@@ -161,11 +185,47 @@ const Search = () => {
                  </View>
                )}
              />
-    </View>
+
+        <Text style={styles.textStylingChannels}> New Channels</Text>
+              <FlatList
+              nestedScrollEnabled
+                       data={newData}
+                       key={newData.changeuuid}
+                       // keyExtractor={({ id }, index) => id}
+                       keyExtractor={(value, index) => index.toString()}
+                       renderItem={({ item,index }) => (
+                         <View style={styles.stationsContainer} key={item.id}>
+                           <View>
+
+                             <TouchableOpacity style={{flexDirection:"row",alignItems:'center'}} onPress={() => {
+                               navigation.navigate("newRadioPlayer",{
+                                 itemIndex: index,
+                                 selectedKey: item.stationuuid,
+                               });
+                             }}>
+                             <Image
+                               source={{
+                                 uri: item.favicon
+                                   ? item.favicon
+                                   : "https://www.iconsdb.com/icons/preview/orange/tabletop-radio-xxl.png",
+                               }}
+                               style={{ width: 90, height: 90 }}
+                             />
+                           <View style={styles.stationsTextContainer}>
+                             <Text style={styles.stationText}>
+                               {item.name} {"\n"}</Text>
+                           </View>
+                             </TouchableOpacity>
+                           </View>
+
+                         </View>
+                       )}
+                     />
+    </ScrollView>
   );
 };
 
-// CREATE A RADIO PLAYER FUNCTION
+// CREATE A RADIO PLAYER THAT BASED ON SELECTED COUNTRY FUNCTION
 function radioPlayer() {
 
     // ACCESS THE PARAM THAT ARE PASSED FROM THE SELECTED RADIO CHANNEL
@@ -268,7 +328,7 @@ function radioPlayer() {
 }
 
 
-
+//CREATE A RADIO PLAYER THAT PLAYS TOP PLAYED CHANNELS FUNCTION
 function topRadioPlayer() {
 
     // ACCESS THE PARAM THAT ARE PASSED FROM THE SELECTED RADIO CHANNEL
@@ -368,6 +428,106 @@ function topRadioPlayer() {
   );
 }
 
+//CREATE A RADIO PLAYER THAT PLAYS NEWLY ADDED CHANNELS FUNCTION
+function newRadioPlayer() {
+
+    // ACCESS THE PARAM THAT ARE PASSED FROM THE SELECTED RADIO CHANNEL
+    const route = useRoute();
+    // SELECTED RADIO STATION INDEX PARAM
+    let {itemIndex} = route.params;
+    // SELECTED COUNTRY NAME PARAM
+    let {selectedCountry} = route.params;
+    let {selectedKey} = route.params;
+  const [country, setCountry] = useState({selectedCountry}.selectedCountry);
+  const URL = `https://radio-browser.p.rapidapi.com/json/stations/lastchange/5?offset=0&limit=100000&hidebroken=false`;
+  const [isLoading, setLoading] = useState(true);
+  const [newdata, setNewData] = useState([]);
+  const navigation = useNavigation();
+
+
+  //Set up the radio player page
+  const [radioLink, setRadioLink] = useState({itemIndex}.itemIndex);
+  const [radioName, setRadioName] = useState('');
+  const [cat,setCat] =useState('');
+  const [sound, setSound] = useState();
+
+  // PASS THE PARAM TO THE JSON FILE TO GET THE RESULT LIST
+  useEffect(() => {
+    fetch(URL, {
+      method: "GET",
+      headers: {
+        "x-rapidapi-host": "radio-browser.p.rapidapi.com",
+        "x-rapidapi-key": "93929a08ebmsh1d9489f52854d26p1ca74djsna9c4054aea22",
+      },
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        setNewData(json);
+        // setTitle(json.title);
+        // setDescription(json.description);
+      })
+      .catch((error) => alert(error))
+      .finally(() => setLoading(false));
+  }, [URL]);
+
+
+  //Fetch the data from the radio api
+  // Play radio function
+  async function playRadio(prop){
+    const { sound } = await Audio.Sound.createAsync(
+      { uri: data[prop].url },
+      { shouldPlay: true },
+      setRadioLink(prop),
+      setRadioName(data[prop].name),
+      setCat(styles.cat)
+    );
+    setSound(sound);
+
+    await sound.playAsync();}
+
+  useEffect(() => {
+    return sound
+      ? () => {
+        sound.pauseAsync(); }
+      : undefined;
+  }, [sound]);
+
+
+
+  // DISPLAY THE RADIO PLAYER PAGE
+  return (
+    <SafeAreaView style={styles.playerContainer}>
+      <TouchableOpacity onPress={() =>navigation.goBack()} >
+        <Image source={require('../../../assets/images/go-back.png')} style={styles.goBackButton}/>
+      </TouchableOpacity>
+      <View style={styles.currentRadio}>
+        <Text style={styles.currentPlaying}> you are listening to {radioName}</Text>
+        <Image source={{url:'https://media3.giphy.com/media/jpbnoe3UIa8TU8LM13/giphy.gif?cid=ecf05e47r1623rss2gol26uslycohbnspebjuwf7hrblrqn2&rid=giphy.gif&ct=g'}} style={cat}/>
+      </View>
+      <View>
+        <Image source={require('../../../assets/images/1200px-Heart_corazón.svg.png')} style={styles.heart}/>
+      </View>
+
+
+
+
+      <View style={styles.musicPlayer}>
+
+        <TouchableOpacity onPress={()=>playRadio(radioLink-1)}>
+          <Image source={require('../../../assets/images/previous.png')} style={styles.buttons}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>playRadio(radioLink)} >
+          <Image source={require('../../../assets/images/play.png')} style={styles.playButton}/>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={()=>playRadio(radioLink+1)}>
+          <Image source={require('../../../assets/images/next.png')} style={styles.buttons}/>
+        </TouchableOpacity>
+
+      </View>
+    </SafeAreaView>
+  );
+}
+
 // CONNECT THE RADIO LIST AND THE RADIO PLAYER
 function radio(){
   return(
@@ -376,6 +536,7 @@ function radio(){
         <Stack.Screen name="Search" component={Search}  />
         <Stack.Screen name="radioPlayer" component={radioPlayer} />
         <Stack.Screen name="topRadioPlayer" component={topRadioPlayer} />
+        <Stack.Screen name="newRadioPlayer" component={newRadioPlayer} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -386,7 +547,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#1E2A6B",
-    justifyContent: "center",
+
     color: "#fff",
     paddingLeft: 15
   },
