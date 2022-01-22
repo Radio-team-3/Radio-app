@@ -2,6 +2,8 @@ import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
 import {NavigationContainer, useNavigation, useRoute,} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
+import PlayImage from '../../../assets/images/play.png';
+import PauseImage from '../../../assets/images/pause.png';
 import {
   StyleSheet,
   ScrollView,
@@ -20,7 +22,6 @@ import {
 import { style } from "styled-system";
 import { Audio } from 'expo-av';
 const Stack = createStackNavigator();
-
 // SEARCH ENGINE FUNCTIONS
 const Search = () => {
   const [country, setCountry] = useState("Canada");
@@ -248,6 +249,9 @@ function radioPlayer() {
   //Set up the radio player page
   const [radioLink, setRadioLink] = useState({itemIndex}.itemIndex);
   const [radioName, setRadioName] = useState('');
+  const [playMusic, setPlayMusic] = useState(true);
+  let imageUri = playMusic ? {PlayImage} : {PauseImage};
+//  let toggleSwitch = () => setPlayMusic(previousState => !previousState);
   const [cat,setCat] =useState('');
   const [sound, setSound] = useState();
 
@@ -279,8 +283,10 @@ function radioPlayer() {
       { shouldPlay: true },
       setRadioLink(prop),
       setRadioName(data[prop].name),
-      setCat(styles.cat)
+      setCat(styles.cat),
+
     );
+    setPlayMusic(true?false:true);
     setSound(sound);
 
     await sound.playAsync();}
@@ -293,7 +299,7 @@ function radioPlayer() {
   }, [sound]);
 
 
-
+console.log(PauseImage);
   // DISPLAY THE RADIO PLAYER PAGE
   return (
     <SafeAreaView style={styles.playerContainer}>
@@ -317,7 +323,7 @@ function radioPlayer() {
           <Image source={require('../../../assets/images/previous.png')} style={styles.buttons}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink)} >
-          <Image source={require('../../../assets/images/play.png')} style={styles.playButton}/>
+          <Image source={{ uri:imageUri.toString() }} style={styles.playButton}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink+1)}>
           <Image source={require('../../../assets/images/next.png')} style={styles.buttons}/>
@@ -588,9 +594,18 @@ const styles = StyleSheet.create({
     paddingTop: 20
   },
   textStylingChannels:{
+  borderWidth: 1,
+      borderRadius: 2,
+      borderColor: '#ddd',
+      borderBottomWidth: 0,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.8,
+      shadowRadius: 2,
+      elevation: 1,
     width:"90%",
-    backgroundColor:"black",
-    color: "#c4c3c3",
+    backgroundColor:"orange",
+    color: "#fff",
     marginTop: 15,
     fontSize: 22,
     paddingLeft:10,
@@ -598,9 +613,18 @@ const styles = StyleSheet.create({
      paddingBottom:20,
   },
     textStylingChannelsTwo:{
+    borderWidth: 1,
+        borderRadius: 2,
+        borderColor: '#ddd',
+        borderBottomWidth: 0,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.8,
+        shadowRadius: 2,
+        elevation: 1,
       width:"90%",
-      backgroundColor:"black",
-      color: "#c4c3c3",
+      backgroundColor:"orange",
+      color: "#fff",
       marginTop: 25,
       fontSize: 22,
       paddingLeft:10,
