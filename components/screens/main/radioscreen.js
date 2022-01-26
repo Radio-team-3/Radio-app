@@ -22,6 +22,7 @@ import {
 import { style } from "styled-system";
 import { Audio } from 'expo-av';
 const Stack = createStackNavigator();
+
 // SEARCH ENGINE FUNCTIONS
 const Search = () => {
   const [country, setCountry] = useState("Canada");
@@ -29,6 +30,8 @@ const Search = () => {
   const topURL = `https://radio-browser.p.rapidapi.com/json/stations/topclick/5?offset=0&limit=100000&hidebroken=false`;
   const newURL = `https://radio-browser.p.rapidapi.com/json/stations/lastchange/5?offset=0&limit=100000&hidebroken=false`;
 
+
+    
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
   const [topData, setTopData] = useState([]);
@@ -243,6 +246,8 @@ function radioPlayer() {
   const RadioURL = `https://radio-browser.p.rapidapi.com/json/stations/byuuid?uuids={changeuuid}`;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [label, setLabel] = useState(false);
+  const [playStatus, setPlayStatus] = useState(false);
   const navigation = useNavigation();
 
 
@@ -278,6 +283,7 @@ function radioPlayer() {
   //Fetch the data from the radio api
   // Play radio function
   async function playRadio(prop){
+  setPlayStatus(!playStatus);
     const { sound } = await Audio.Sound.createAsync(
       { uri: data[prop].url },
       { shouldPlay: true },
@@ -286,15 +292,16 @@ function radioPlayer() {
       setCat(styles.cat),
 
     );
-    setPlayMusic(true?false:true);
+     let temp = label;
+      setLabel(!temp);
     setSound(sound);
 
-    await sound.playAsync();}
+   playStatus ? await sound.pauseAsync() : await sound.playAsync() ;}
 
   useEffect(() => {
     return sound
       ? () => {
-        sound.pauseAsync(); }
+      sound.pauseAsync(); }
       : undefined;
   }, [sound]);
 
@@ -323,7 +330,7 @@ console.log(PauseImage);
           <Image source={require('../../../assets/images/previous.png')} style={styles.buttons}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink)} >
-          <Image source={{ uri:imageUri.toString() }} style={styles.playButton}/>
+          <Image source={label? require('../../../assets/images/pause.png'): require('../../../assets/images/play.png')} style={styles.playButton}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink+1)}>
           <Image source={require('../../../assets/images/next.png')} style={styles.buttons}/>
@@ -348,6 +355,8 @@ function topRadioPlayer() {
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/topclick/5?offset=0&limit=100000&hidebroken=false`;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [label, setLabel] = useState(false);
+  const [playStatus, setPlayStatus] = useState(false);
   const navigation = useNavigation();
 
 
@@ -380,6 +389,7 @@ function topRadioPlayer() {
   //Fetch the data from the radio api
   // Play radio function
   async function playRadio(prop){
+  setPlayStatus(!playStatus);
     const { sound } = await Audio.Sound.createAsync(
       { uri: data[prop].url },
       { shouldPlay: true },
@@ -389,12 +399,16 @@ function topRadioPlayer() {
     );
     setSound(sound);
 
-    await sound.playAsync();}
+     let temp = label;
+      setLabel(!temp);
+    setSound(sound);
+
+   playStatus ? await sound.pauseAsync() : await sound.playAsync() ;}
 
   useEffect(() => {
     return sound
       ? () => {
-        sound.pauseAsync(); }
+      sound.pauseAsync(); }
       : undefined;
   }, [sound]);
 
@@ -423,7 +437,7 @@ function topRadioPlayer() {
           <Image source={require('../../../assets/images/previous.png')} style={styles.buttons}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink)} >
-          <Image source={require('../../../assets/images/play.png')} style={styles.playButton}/>
+          <Image source={label? require('../../../assets/images/pause.png'): require('../../../assets/images/play.png')} style={styles.playButton}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink+1)}>
           <Image source={require('../../../assets/images/next.png')} style={styles.buttons}/>
@@ -448,6 +462,8 @@ function newRadioPlayer() {
   const URL = `https://radio-browser.p.rapidapi.com/json/stations/lastchange/5?offset=0&limit=100000&hidebroken=false`;
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [label, setLabel] = useState(false);
+  const [playStatus, setPlayStatus] = useState(false);
   const navigation = useNavigation();
 
 
@@ -480,6 +496,7 @@ function newRadioPlayer() {
   //Fetch the data from the radio api
   // Play radio function
   async function playRadio(prop){
+  setPlayStatus(!playStatus);
     const { sound } = await Audio.Sound.createAsync(
       { uri: data[prop].url },
       { shouldPlay: true },
@@ -489,12 +506,16 @@ function newRadioPlayer() {
     );
     setSound(sound);
 
-    await sound.playAsync();}
+     let temp = label;
+      setLabel(!temp);
+    setSound(sound);
+
+   playStatus ? await sound.pauseAsync() : await sound.playAsync() ;}
 
   useEffect(() => {
     return sound
       ? () => {
-        sound.pauseAsync(); }
+      sound.pauseAsync(); }
       : undefined;
   }, [sound]);
 
@@ -523,7 +544,7 @@ function newRadioPlayer() {
           <Image source={require('../../../assets/images/previous.png')} style={styles.buttons}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink)} >
-          <Image source={require('../../../assets/images/play.png')} style={styles.playButton}/>
+          <Image source={label? require('../../../assets/images/pause.png'): require('../../../assets/images/play.png')} style={styles.playButton}/>
         </TouchableOpacity>
         <TouchableOpacity onPress={()=>playRadio(radioLink+1)}>
           <Image source={require('../../../assets/images/next.png')} style={styles.buttons}/>
