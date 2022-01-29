@@ -18,7 +18,7 @@ const OnBoarding = ({ navigation }) => {
   const Square = ({ isLight, selected }) => {
     let backgroundColor;
     if (isLight) {
-      backgroundColor = selected ? "#4632a1" : "r#4632a1";
+      backgroundColor = selected ? "#4632a1" : "#4632a1";
     } else {
       backgroundColor = selected ? "#4632a1" : "rgba(255, 255, 255, 0.5)";
     }
