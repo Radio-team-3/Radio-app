@@ -1,22 +1,29 @@
-import { StyleSheet, View, Text, Image, Button } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Image,
+  Button,
+  SafeAreaView,
+} from "react-native";
 import React, { Component } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Onboarding from "react-native-onboarding-swiper";
 
 const OnBoarding = ({ navigation }) => {
   function navigate() {
-    navigation.navigate("SignUp");
+    navigation.navigate("Login");
   }
 
   const Square = ({ isLight, selected }) => {
     let backgroundColor;
     if (isLight) {
-      backgroundColor = selected ? "rgba(0, 0, 0, 0.8)" : "rgba(0, 0, 0, 0.3)";
+      backgroundColor = selected ? "#4632a1" : "#4632a1";
     } else {
-      backgroundColor = selected ? "#fff" : "rgba(255, 255, 255, 0.5)";
+      backgroundColor = selected ? "#4632a1" : "rgba(255, 255, 255, 0.5)";
     }
     return (
-      <View
+      <SafeAreaView
         style={{
           width: 6,
           height: 6,
@@ -43,7 +50,7 @@ const OnBoarding = ({ navigation }) => {
       }}
       textStyle={{ color: color(isLight) }}
       {...props}
-      onPress={() => navigation.navigate("SignUp")}
+      onPress={() => navigation.navigate("Login")}
     />
   );
 
@@ -72,7 +79,7 @@ const OnBoarding = ({ navigation }) => {
       }}
       containerViewStyle={{
         marginVertical: 10,
-        width: 70,
+        width: 100,
         backgroundColor: backgroundColor(isLight),
       }}
       textStyle={{ color: color(isLight) }}
@@ -81,40 +88,47 @@ const OnBoarding = ({ navigation }) => {
   );
 
   return (
-    <View style={styles.slide}>
+    <SafeAreaView style={styles.slide}>
       <Onboarding
         DotComponent={Square}
         NextButtonComponent={Next}
         SkipButtonComponent={Skip}
         DoneButtonComponent={Done}
-        titleStyles={{ color: "blue" }} // set default color for the title
+        titleStyles={{ color: "#FFF" }} // set default color for the title
         pages={[
           {
-            backgroundColor: "#161549",
-            image: <Image source={require("../../../assets/fulllogo.jpeg")} />,
+            backgroundColor: "#4632a1",
+            image: (
+              <Image
+                style={styles.OnboardingLogoImage}
+                source={require("../../../assets/images/logo.png")}
+              />
+            ),
           },
           {
-            backgroundColor: "#161549",
-            image: <Image source={require("../../../assets/smalllogo.jpg")} />,
-            title: "Welcome to the Music Player",
+            backgroundColor: "#4632a1",
+            // image: (
+            //   <Image source={require("../../../assets/images/logo.png")} />
+            // ),
+            title: "Welcome to the Radio Player",
             subtitle:
-              "Start listingin to your songs with one of the most amazing and stylish music players",
+              "Start listing to radio stations from all over the wolrd with one of the most amazing and stylish Radio players",
           },
           {
-            backgroundColor: "#161549",
+            backgroundColor: "#4632a1",
             image: <Image source={require("../../../assets/RadioIcon.png")} />,
             title: "Rich radio program",
-            subtitle: "Explore more stations",
+            subtitle: "Explore over 100+ stations",
           },
           {
-            backgroundColor: "#161549",
+            backgroundColor: "#4632a1",
             image: <Image source={require("../../../assets/Fav.jpg")} />,
             title: "Customize list",
             subtitle: "Listen to your favourite",
           },
         ]}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -123,6 +137,11 @@ export default OnBoarding;
 const styles = StyleSheet.create({
   slide: {
     flex: 1,
-    backgroundColor: "#EAF8E4",
+    backgroundColor: "#4632a1",
+  },
+
+  OnboardingLogoImage: {
+    width: "80%",
+    resizeMode: "contain",
   },
 });
