@@ -18,14 +18,14 @@ const OnBoarding = ({ navigation }) => {
   const Square = ({ isLight, selected }) => {
     let backgroundColor;
     if (isLight) {
-      backgroundColor = selected ? "#4632a1" : "#4632a1";
+      backgroundColor = selected ? "purple" : "purple";
     } else {
-      backgroundColor = selected ? "#4632a1" : "rgba(255, 255, 255, 0.5)";
+      backgroundColor = selected ? "red" : "white";
     }
     return (
       <SafeAreaView
         style={{
-          width: 6,
+          width: 15,
           height: 6,
           marginHorizontal: 3,
           backgroundColor,
@@ -34,7 +34,7 @@ const OnBoarding = ({ navigation }) => {
     );
   };
 
-  const backgroundColor = (isLight) => (isLight ? "blue" : "lightblue");
+  const backgroundColor = (isLight) => (isLight ? "red" : "red");
   const color = (isLight) => backgroundColor(!isLight);
 
   const Done = ({ isLight, ...props }) => (

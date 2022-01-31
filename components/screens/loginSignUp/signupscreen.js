@@ -50,6 +50,11 @@ const SignUp = ({ navigation }) => {
       .auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
+        firebase
+          .firestore()
+          .collection("users")
+          .doc(firebase.auth().currentUser.uid)
+          .set({ fullName, email });
         setIsLoading(false);
         setSuccessMessage(
           "Your account has been created! Please Login to complete the Sign Up"
